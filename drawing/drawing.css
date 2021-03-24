@@ -1,0 +1,100 @@
+body{
+  background:rgb(163,163,163)
+}
+.triangle{
+  width:0px;
+  border:100px solid black;
+  border-left-color:transparent;
+  border-top-color:transparent;
+  border-right-color:transparent;
+  margin:100px auto;
+}
+.yinyang1{
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  background: linear-gradient(to bottom, #ffffff 0%,#ffffff 50%,#000000 50%,#000000 100%); 
+  position:relative;
+  margin:100px auto;
+  animation-name:spin;
+  animation-duration:3s;
+}
+.yinyang1 .one{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:#000;
+  position:absolute;
+  top:50px;
+}
+.yinyang1 .two{
+  width:100px;
+  height:100px;
+  border-radius:50%;
+  background:#FFF;
+  position:absolute;
+  top:50px;
+  right:0;
+}
+.yinyang1 .one .circle1{
+  background:#FFF;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  position:absolute;
+  left:40px;
+  top: 40px;
+}
+.yinyang1 .two .circle2{
+  background:#000;
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  position:absolute;
+  right:40px;
+  top: 40px;
+}
+/*阴阳2*/
+.yinyang2{
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  background: linear-gradient(to bottom, #ffffff 0%,#ffffff 50%,#000000 50%,#000000 100%); 
+  position:relative;
+  margin:100px auto;
+  animation-name:spin;
+  animation-duration:3s;
+  animation-iteration-count:infinite;
+  animation-timing-function:linear;
+}
+
+.yinyang2::before{
+  content:'';
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:#fff;
+  position:absolute;
+  top:50px;
+  left:0px;
+  border:40px solid black;
+}
+.yinyang2::after{
+  content:'';
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  background:black;
+  position:absolute;
+  top:50px;
+  right:0;
+  border:40px solid white;
+}
+@keyframes spin{
+  from{
+    transform:rotate(0deg);
+  }
+  to{
+    transform:rotate(360deg);
+  }
+}
