@@ -1,6 +1,7 @@
 body{
   background:rgb(163,163,163)
 }
+/*画一个三角形，使用border的宽度颜色*/
 .triangle{
   width:0px;
   border:100px solid black;
@@ -9,6 +10,7 @@ body{
   border-right-color:transparent;
   margin:100px auto;
 }
+/*画一个太极八卦图，简单实现版*/
 .yinyang1{
   width:200px;
   height:200px;
@@ -55,6 +57,7 @@ body{
   top: 40px;
 }
 /*阴阳2*/
+/*用div的伪类before after实现两个圆，border的宽度实现大圆，background实现小圆*/
 .yinyang2{
   width:200px;
   height:200px;
@@ -64,8 +67,8 @@ body{
   margin:100px auto;
   animation-name:spin;
   animation-duration:3s;
-  animation-iteration-count:infinite;
-  animation-timing-function:linear;
+  animation-iteration-count:infinite; /*一直转*/
+  animation-timing-function:linear;/*匀速转*/
 }
 
 .yinyang2::before{
@@ -90,7 +93,7 @@ body{
   right:0;
   border:40px solid white;
 }
-@keyframes spin{
+@keyframes spin{ /*让它转起来*/
   from{
     transform:rotate(0deg);
   }
