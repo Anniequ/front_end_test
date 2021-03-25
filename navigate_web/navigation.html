@@ -37,7 +37,7 @@
             'm': 'madonalds.com.cn',
         }
         //去除localStorage zzz中的
-        var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz')|| '')
+        var hashInLocalStorage = JSON.parse(localStorage.getItem('zzz')|| 'null')
             if(hashInLocalStorage){
                 hash=hashInLocalStorage
             }
