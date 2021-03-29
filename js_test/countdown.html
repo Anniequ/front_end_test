@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <script>
+        var n = 60
+        window.onload = function () {
+            var t = setInterval("countDown()", 1000) //重复执行  setTimeout()只执行一次
+            document.getElementById("btn_pause").onclick = function () {
+                clearInterval(t)
+            }
+            document.getElementById("btn_continue").onclick = function () {
+                t = setInterval("countDown()", 1000);
+            }
+        }
+        function countDown() {
+            if (n > 0) {
+                n--;
+                document.getElementById("num").innerHTML = n;
+            }
+        }
+
+    </script>
+</head>
+
+<body>
+    <p>倒计时：<span id="num">60</span></p>
+    <input id="btn_pause" value="暂停" type="button">
+    <input id="btn_continue" value="继续" type="button">
+</body>
+
+</html>
+<!--
+    bug：不能多次点击continue，会重复生效,速度加快。
+-->

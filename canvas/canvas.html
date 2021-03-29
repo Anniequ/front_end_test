@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JS Bin</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        button {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+        }
+
+        #canvas,
+        #xxx {
+            margin: none;
+            background: gray;
+            display: block;
+            /*width: 500px; 在这里设置宽高度，高度会失真*/
+        }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="xxx" width="300" height="300"></canvas>
+    <button id="eraser">橡皮擦</button>
+    <script>
+        /* //画个矩形
+         var canvas = document.getElementById("canvas");
+         var ctx = canvas.getContext('2d');
+         ctx.fillStyle = 'green';  //只能指定一次颜色
+         ctx.fillRect(10,10,100, 100);
+ 
+         ctx.clearRect(45, 50, 30, 20);//以45,50为中心挖掉30px×20px长宽的矩形
+         ctx.fillstyle = 'blue'; //没用
+         ctx.strokeRect(10, 10, 100, 100);
+         //画一个三角形
+         ctx.fillstyle = 'red'; //没用
+         ctx.beginPath();
+         ctx.moveTo(200, 50);
+         ctx.lineTo(225, 75);
+         ctx.lineTo(225, 25);
+         ctx.fill();
+ 
+         //画个圆
+         ctx.beginPath();
+         ctx.arc(150, 100, 30, 0, 2 * Math.PI);//(x,y) r,(0-2 Math.PI)的圆弧
+         ctx.fill();
+ 
+ */
+        var yyy = document.getElementById("xxx");
+        resizePage();
+        window.onresize = function () {
+            resizePage();
+        }
+        function resizePage() {
+            //获取页面宽高
+            var pageWidth = document.documentElement.clientWidth;
+            var pageHeight = document.documentElement.clientHeight;
+            yyy.width = pageWidth;
+            yyy.height = pageHeight;
+        }
+        var context = yyy.getContext('2d');
+        function drawCircle(x, y, radius) {
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2);
+            context.fill();
+        }
+
+        var using = false;
+        var lastPoint = { x: undefined, y: undefined }
+
+        yyy.onmousedown = function (aaa) {
+            using = true;
+            var x = aaa.clientX;
+            var y = aaa.clientY;
+
+            if (eraserEnabled) {
+                using = true;
+                context.clearRect(x-5, y-5, 10, 10);
+            }
+            else {
+                lastPoint = { 'x': x, 'y': y }
+            }
+        }
+        yyy.onmousemove = function (aaa) {
+            if (eraserEnabled) {
+                if(using){
+                    context.clearRect(x-5, y-5, 10, 10);
+                }
+            }
+            else {
+                if (using) {
+                    var x = aaa.clientX;
+                    var y = aaa.clientY;
+                    var newPoint = { 'x': x, 'y': y };
+
+                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                    lastPoint = newPoint; //实时更新点
+                }
+            }
+        }
+        yyy.onmouseup = function (aaa) {
+            using = false;
+        }
+        function drawLine(x1, y1, x2, y2) {
+            context.beginPath();
+            context.lineWidth = 5;
+            context.moveTo(x1, y1);
+            context.lineTo(x2, y2);
+            context.stroke();
+            context.closePath();
+        }
+        var eraserEnabled = false;
+        eraser.onclick = function () {
+            eraserEnabled = !eraserEnabled; //bool值转换
+        }
+
+    </script>
+</body>
+
+</html>

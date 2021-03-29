@@ -13,94 +13,115 @@
         <div class="wrapper" id="wrapper"></div>
     </main>
     <footer></footer>
-    <script>//初始化数据
-        var keys = {
-            '0': ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-            '1': ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-            '2': ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
-            'length': 3
-        }
-        var hash = {
-            'q': 'qq.com',
-            'w': 'weibo.com',
-            'e': 'ele.me',
-            'r': 'renren.com',
-            't': 'tianya.com',
-            'y': 'youku.com',
-            'u': 'uc.com',
-            'i': 'iqiyi.com',
-            'o': 'opera.com',
-            'p': undefined,
-            'a': 'alibaba.com',
-            's': 'sohu.com',
-            'z': 'zhihu.com',
-            'm': 'madonalds.com.cn',
-        }
-        //取出localStorage zzz中的
-        var hashInLocalStorage = getFromLocalStorage('zzz')
-        if (hashInLocalStorage) {
-            hash = hashInLocalStorage
-        }
-        
-        
-        //s生成键盘
-        var index = 0
-        while (index < keys['length']) {
-            var div1 = tag('div',{className:'row'})
-            div1.className = 'row'
-            wrapper.appendChild(div1)
-            row = keys[index]
-            var index2 = 0
-            while (index2 < row['length']) {
-                var kbd1 = tag('kbd')
-                var span1 = tag('span')
-                span1.textContent = row[index2]
-                span1.className = "letter"
-                kbd1.appendChild(span1)
-                kbd1.className = 'key'
-                var button1 = tag('button')
-                button1.textContent = 'edit'
-                var img = tag('img')
-                if (hash[row[index2]]) {
-                    img.src = 'http://' + hash[row[index2]] + '/favicon.ico'
-                } else {
-                    img.src = './img/undefined.png'
-                }
-                img.onerror = function (err) {
-                    err.target.src = './img/undefined.png'
-                }
-                button1.onclick = function (dfagg) {
-                    var button2 = dfagg['target'] //现在不能用了，dfagg中只有一个值了 isTrusted: true  !!!!莫名奇怪的开心，它用不了了。。。
-                    var img2 = button2.previousSibling
-                    var key = button2['id']
-                    var x = prompt('给我一个网址')
-                    hash[key] = x
-                    img2.src = 'http://' + x + '/favicon.ico'
-                    img2.onerror = function (err) {
-                        err.target.src = './img/undefined.png'
-                    }
-                    localStorage.setItem('zzz', JSON.stringify(hash))
-                }
-                kbd1.appendChild(img)
-                kbd1.appendChild(button1)
-                div1.appendChild(kbd1)
-                index2 = index2 + 1
-            }
-            index = index + 1
-        }
-        //键盘监听
-        document.onkeypress = function (xzk) {
-            var key = xzk['key']
-            var website = hash[key]
-            //location.href = 'http://'+ website
-            window.open('http://' + website, '_blank')
-        }
-        function getFromLocalStorage(name){
+    <script>
+        //初始化数据
+        var initObj = init()
+        var keys = initObj["keys"]
+        var hash = initObj['hash']
+        //initObj.hashInLocalStorage()
+
+        //生成键盘
+        generateKeyboard(keys, hash)
+
+        //监听键盘
+        listenToUser(hash)
+
+        function getFromLocalStorage(name) {
             return JSON.parse(localStorage.getItem(name) || 'null')
         }
-        function tag(tagName, attributes){
-            return document.createElement(tagName)
-
+        function tag(tagName, attributes) {
+            var element = document.createElement(tagName)
+            for (var key in attributes) {
+                element[key] = attributes[key]
+            }
+            return element
+        }
+        function createButton(buttonID) {
+            var button1 = tag('button', { textContent: 'edit', id: buttonID })
+            button1.onclick = function (dfagg) {
+                var button2 = dfagg['target'] //现在不能用了，dfagg中只有一个值了 isTrusted: true  !!!!莫名奇怪的开心，它用不了了。。。
+                var img2 = button2.previousSibling
+                var key = button2['id']
+                var x = prompt('给我一个网址')
+                hash[key] = x
+                img2.src = 'http://' + x + '/favicon.ico'
+                img2.onerror = function (err) {
+                    err.target.src = './img/undefined.png'
+                }
+                localStorage.setItem('zzz', JSON.stringify(hash))
+            }
+            return button1
+        }
+        function createImg(domain) {
+            var img = tag('img')
+            if (domain) {
+                img.src = 'http://' + domain + '/favicon.ico'
+            } else {
+                img.src = './img/undefined.png'
+            }
+            img.onerror = function (err) {
+                err.target.src = './img/undefined.png'
+            }
+            return img
+        }
+        function init() {
+            var keys = {
+                '0': ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+                '1': ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+                '2': ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+                'length': 3
+            }
+            var hash = {
+                'q': 'qq.com',
+                'w': 'weibo.com',
+                'e': 'ele.me',
+                'r': 'renren.com',
+                't': 'tianya.com',
+                'y': 'youku.com',
+                'u': 'uc.com',
+                'i': 'iqiyi.com',
+                'o': 'opera.com',
+                'p': undefined,
+                'a': 'alibaba.com',
+                's': 'sohu.com',
+                'z': 'zhihu.com',
+                'm': 'madonalds.com.cn',
+            }
+            //取出localStorage zzz中的
+            var hashInLocalStorage = getFromLocalStorage('zzz')
+            if (hashInLocalStorage) {
+                hash = hashInLocalStorage
+            }
+            return {
+                "keys": keys,
+                "hash": hash
+            }
+        }
+        function generateKeyboard(keys, hash) {
+            for (var index = 0; index < keys['length']; index = index + 1) {
+                var div1 = tag('div', { className: 'row' })
+                wrapper.appendChild(div1)
+                var row = keys[index]
+                for (var index2 = 0; index2 < row['length']; index2 = index2 + 1) {
+                    var span1 = tag('span', { textContent: row[index2], className: 'letter' })
+                    var button1 = createButton(row[index2])
+                    var img = createImg(hash[row[index2]])
+                    var kbd1 = tag('kbd', { className: 'key' })
+                    kbd1.appendChild(span1)
+                    kbd1.appendChild(img)
+                    kbd1.appendChild(button1)
+                    div1.appendChild(kbd1)
+                }
+            }
+        }
+        function listenToUser(hash) {
+            //键盘监听
+            document.onkeypress = function (xzk) {
+                var key = xzk['key']
+                var website = hash[key]
+                //location.href = 'http://'+ website
+                window.open('http://' + website, '_blank')
+            }
         }
     </script>
 </body>
