@@ -1,12 +1,14 @@
 *{margin: 0;padding: 0;}
 a{text-decoration:none;}
 kbd{
-    border: 1px solid red;
      width:4em;
      height: 4em;
      display: inline-block;
      text-transform: uppercase;
      position: relative;
+     font-size: 16px;
+     font-family: Arial, Helvetica, sans-serif;
+
 }
 kbd>button{
     position: absolute;
@@ -17,15 +19,53 @@ kbd>button{
 kbd:hover > button{
     display: inline-block;
 }
+body{
+    background: rgb(101,159,208) url(./img/cloud.jpg) no-repeat center;
+    background-size: cover; /*图片自适应*/
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
 main>div>div:nth-child(2){
-    margin-left: 2em;
+    margin-left: -20px;
 }
 main>div>div:nth-child(3){
-    margin-left: 4em;
+    margin-left: -94px;
 }
 main{
     text-align: center;
 }
 main>div{
     display: inline-block;
+}
+.key{
+    width: 80px;
+    height:64px;
+    background: linear-gradient(to bottom, #292929 0%,#111111 100%);
+    border: 1px solid #373737;
+    color: #c5c5c5;
+    border-radius: 7px;
+    box-shadow: 0 0 0 1px #1A1B1C;
+    box-shadow: 0 0 0 2px #1f2020;
+    box-shadow: 0 3px 0 2px #080808;
+    margin: 0px 10px;
+    position:relative;
+}
+.key .letter{
+    position: absolute;
+    left:6px;
+    top:6px;
+}
+.key img{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 6px;
+    bottom: 6px;
+}
+.row{
+    margin: 20px;
 }

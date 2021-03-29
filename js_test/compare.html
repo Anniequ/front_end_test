@@ -1,0 +1,23 @@
+<! DOCTYPE html>
+<html>
+<head>
+<title></title>
+<script type = "text/javascript">
+function maxNum(){
+var x = document.getElementById("num1").value
+var y = document.getElementById("num2").value
+x=parseFloat(x)
+y=parseFloat(y)
+if (x>y)
+{alert("the max number is "+x)}
+else
+{alert("the max number is " +y)}
+}
+</script>
+</head>
+<body>
+The first number is:<input type="text" id = "num1"><br>
+The second number is:<input type ="text" id ="num2"><br>
+<input type = "button" onclick="maxNum()" value = "compare">
+</body>
+</html>
