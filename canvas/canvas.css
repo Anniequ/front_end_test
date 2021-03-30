@@ -1,0 +1,18 @@
+
+body {
+    margin: 0;
+}
+
+button {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+#canvas,
+#xxx {
+    margin: none;
+    background: gray;
+    display: block;
+    /*width: 500px; 在这里设置宽高度，高度会失真*/
+}

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JS Bin</title>
+    <link rel="stylesheet" href="./canvas.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--放手机上不缩放-->
+</head>
+
+<body>
+    <canvas id="xxx" width="300" height="300"></canvas>
+    <button id="eraser">橡皮擦</button>
+    <script>
+
+        var canvas = document.getElementById("xxx");
+        var context = canvas.getContext('2d');
+        auotoSetCanvasSize(canvas)
+        listenToUser(canvas)
+
+        var eraserEnabled = false;
+        eraser.onclick = function () {
+            eraserEnabled = !eraserEnabled; //bool值转换
+        }
+
+        /*******/
+        function auotoSetCanvasSize(canvas) {
+            setCanvasSize()
+            window.onresize = function () {
+                setCanvasSize()
+            }
+        }
+
+        function setCanvasSize() {
+            //获取页面宽高
+            var pageWidth = document.documentElement.clientWidth;
+            var pageHeight = document.documentElement.clientHeight;
+            canvas.width = pageWidth;
+            canvas.height = pageHeight;
+        }
+
+        function drawCircle(x, y, radius) {
+            context.beginPath();
+            context.arc(x, y, radius, 0, Math.PI * 2);
+            context.fill();
+        }
+
+
+        function drawLine(x1, y1, x2, y2) {
+            context.beginPath();
+            context.lineWidth = 5;
+            context.moveTo(x1, y1);
+            context.lineTo(x2, y2);
+            context.stroke();
+            context.closePath();
+        }
+
+        /*手机就不能使用Mouse事件了,使用touch*/
+        function listenToUser(canvas) {
+            var using = false;
+            var lastPoint = { x: undefined, y: undefined }
+            if ("ontouchstart" in document.body) {
+                //触屏
+                var using = false;
+            var lastPoint = { x: undefined, y: undefined }
+
+            canvas.ontouchstart = function (aaa) {
+                using = true;
+                var x = aaa.touches[0].clientX;
+                var y = aaa.touches[0].clientY;
+
+                if (eraserEnabled) {
+                    using = true;
+                    context.clearRect(x - 5, y - 5, 10, 10);
+                }
+                else {
+                    lastPoint = { 'x': x, 'y': y }
+                }
+            }
+            canvas.ontouchmove = function (aaa) {
+                if (eraserEnabled) {
+                    if (using) {
+                        context.clearRect(x - 5, y - 5, 10, 10);
+                    }
+                }
+                else {
+                    if (using) {
+                        var x = aaa.touches[0].clientX;
+                        var y = aaa.touches[0].clientY;
+                        var newPoint = { 'x': x, 'y': y };
+
+                        drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                        lastPoint = newPoint; //实时更新点
+                    }
+                }
+            }
+            canvas.ontouchend = function (aaa) {
+                using = false;
+            }
+            } else {
+                var using = false;
+            var lastPoint = { x: undefined, y: undefined }
+
+            canvas.onmousedown = function (aaa) {
+                using = true;
+                var x = aaa.clientX;
+                var y = aaa.clientY;
+
+                if (eraserEnabled) {
+                    using = true;
+                    context.clearRect(x - 5, y - 5, 10, 10);
+                }
+                else {
+                    lastPoint = { 'x': x, 'y': y }
+                }
+            }
+            canvas.onmousemove = function (aaa) {
+                if (eraserEnabled) {
+                    if (using) {
+                        context.clearRect(x - 5, y - 5, 10, 10);
+                    }
+                }
+                else {
+                    if (using) {
+                        var x = aaa.clientX;
+                        var y = aaa.clientY;
+                        var newPoint = { 'x': x, 'y': y };
+
+                        drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                        lastPoint = newPoint; //实时更新点
+                    }
+                }
+            }
+            canvas.onmouseup = function (aaa) {
+                using = false;
+            }
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
