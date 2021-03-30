@@ -3,29 +3,11 @@
 
 <head>
     <title>JS Bin</title>
-    <style>
-        body {
-            margin: 0;
-        }
-
-        button {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-        }
-
-        #canvas,
-        #xxx {
-            margin: none;
-            background: gray;
-            display: block;
-            /*width: 500px; 在这里设置宽高度，高度会失真*/
-        }
-    </style>
+    <link rel="stylesheet" href="./canvas.css">
+    <meta charset="utf-8">
 </head>
 
 <body>
-
     <canvas id="xxx" width="300" height="300"></canvas>
     <button id="eraser">橡皮擦</button>
     <script>
@@ -52,61 +34,44 @@
          ctx.fill();
  
  */
-        var yyy = document.getElementById("xxx");
-        resizePage();
-        window.onresize = function () {
-            resizePage();
+        var canvas = document.getElementById("xxx");
+        var context = canvas.getContext('2d');
+        auotoSetCanvasSize(canvas)
+        listenToMouse(canvas)
+
+        var eraserEnabled = false;
+        eraser.onclick = function () {
+            eraserEnabled = !eraserEnabled; //bool值转换
+            actions.className = 'actions x'
         }
-        function resizePage() {
+        brush.onclick = function () {
+            eraserEnabled = false
+            actions.className = 'actions'
+        }
+
+        /*******/
+        function auotoSetCanvasSize(canvas) {
+            setCanvasSize()
+            window.onresize = function () {
+                setCanvasSize()
+            }
+        }
+
+        function setCanvasSize() {
             //获取页面宽高
             var pageWidth = document.documentElement.clientWidth;
             var pageHeight = document.documentElement.clientHeight;
-            yyy.width = pageWidth;
-            yyy.height = pageHeight;
+            canvas.width = pageWidth;
+            canvas.height = pageHeight;
         }
-        var context = yyy.getContext('2d');
+
         function drawCircle(x, y, radius) {
             context.beginPath();
             context.arc(x, y, radius, 0, Math.PI * 2);
             context.fill();
         }
 
-        var using = false;
-        var lastPoint = { x: undefined, y: undefined }
 
-        yyy.onmousedown = function (aaa) {
-            using = true;
-            var x = aaa.clientX;
-            var y = aaa.clientY;
-
-            if (eraserEnabled) {
-                using = true;
-                context.clearRect(x-5, y-5, 10, 10);
-            }
-            else {
-                lastPoint = { 'x': x, 'y': y }
-            }
-        }
-        yyy.onmousemove = function (aaa) {
-            if (eraserEnabled) {
-                if(using){
-                    context.clearRect(x-5, y-5, 10, 10);
-                }
-            }
-            else {
-                if (using) {
-                    var x = aaa.clientX;
-                    var y = aaa.clientY;
-                    var newPoint = { 'x': x, 'y': y };
-
-                    drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
-                    lastPoint = newPoint; //实时更新点
-                }
-            }
-        }
-        yyy.onmouseup = function (aaa) {
-            using = false;
-        }
         function drawLine(x1, y1, x2, y2) {
             context.beginPath();
             context.lineWidth = 5;
@@ -115,10 +80,45 @@
             context.stroke();
             context.closePath();
         }
-        var eraserEnabled = false;
-        eraser.onclick = function () {
-            eraserEnabled = !eraserEnabled; //bool值转换
+        function listenToMouse(canvas) {
+            var using = false;
+            var lastPoint = { x: undefined, y: undefined }
+
+            canvas.onmousedown = function (aaa) {
+                using = true;
+                var x = aaa.clientX;
+                var y = aaa.clientY;
+
+                if (eraserEnabled) {
+                    using = true;
+                    context.clearRect(x - 5, y - 5, 10, 10);
+                }
+                else {
+                    lastPoint = { 'x': x, 'y': y }
+                }
+            }
+            canvas.onmousemove = function (aaa) {
+                if (eraserEnabled) {
+                    if (using) {
+                        context.clearRect(x - 5, y - 5, 10, 10);
+                    }
+                }
+                else {
+                    if (using) {
+                        var x = aaa.clientX;
+                        var y = aaa.clientY;
+                        var newPoint = { 'x': x, 'y': y };
+
+                        drawLine(lastPoint.x, lastPoint.y, newPoint.x, newPoint.y);
+                        lastPoint = newPoint; //实时更新点
+                    }
+                }
+            }
+            canvas.onmouseup = function (aaa) {
+                using = false;
+            }
         }
+
 
     </script>
 </body>
