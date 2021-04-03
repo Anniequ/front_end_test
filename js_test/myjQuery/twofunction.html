@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <ul>
+        <li id=item1>选项1</li>
+        <li id=item2>选项2</li>
+        <li id=item3>选项3</li>
+        <li id=item4>选项4</li>
+        <li id=item5>选项5</li>
+    </ul>
+    <script>
+        function getSiblings(node) {
+            var allChildren = node.parentNode.children
+            var arr = {
+                length: 0
+            }
+            for (let i = 0; i < allChildren.length; i++) {
+                if (allChildren[i] !== node) {
+                    arr[arr.length] = allChildren[i] //伪数组的赋值方法
+                    arr.length++
+                }
+            }
+            return arr
+        }
+
+
+        function addClass(node, classes) {
+
+            //classes.forEach((value)=>item3.classList.add(value))
+            for (let key in classes) {
+                var methodName = classes[key] ? "add" : "remove"
+                node.classList[methodName](key)
+                /*if (classes[key]) {
+                    node.classList.add(key)
+                } else {
+                    node.classList.remove(key)
+                }*/
+            }
+        }
+        /****************************************************
+        //使用方法一
+        console.log(getSiblings(item3))
+        var classes = {'a':true,'b':true,'c':false}
+        addClass(item3,classes)
+        */
+       
+
+        /****************************************************
+        //使用方法二
+        window.anniedom = {}
+        anniedom.getSiblings = getSiblings
+        anniedom.addClass = addClass
+
+        anniedom.getSiblings(item3)
+        anniedom.addClass(item3, { a: true, b: false, c: true })
+        */
+
+       /**************************
+        * 使用方法三
+       */
+        //更改原型链
+        Node.prototype.getSiblings = function(){
+            var allChildren = this.parentNode.children
+            var arr = {
+                length: 0
+            }
+            for (let i = 0; i < allChildren.length; i++) {
+                if (allChildren[i] !== this) {
+                    arr[arr.length] = allChildren[i] //伪数组的赋值方法
+                    arr.length++
+                }
+            }
+            return arr
+        }
+        //console.log(item3.getSiblings())
+
+        Node.prototype.addClass = function(classes){
+            for (let key in classes) {
+                var methodName = classes[key] ? "add" : "remove"
+                this.classList[methodName](key)
+        }
+    }
+    console.log(item3.addClass({ a: true, b: true, c: true }))
+    </script>
+</body>
+
+</html>
