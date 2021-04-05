@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href='./test.css'>
     <title>Document</title>
 </head>
 
@@ -45,16 +46,15 @@
                 }*/
             }
         }
-        /****************************************************
-        //使用方法一
-        console.log(getSiblings(item3))
-        var classes = {'a':true,'b':true,'c':false}
-        addClass(item3,classes)
-        */
-       
+        /*progress 1*************************************************/
+        //console.log(getSiblings(item3))
+        //var classes = {'a':true,'b':true,'c':false}
+        //addClass(item3,classes)
 
-        /****************************************************
-        //使用方法二
+
+
+        /*progress 2*************************************************/
+        /*//自我库
         window.anniedom = {}
         anniedom.getSiblings = getSiblings
         anniedom.addClass = addClass
@@ -63,12 +63,11 @@
         anniedom.addClass(item3, { a: true, b: false, c: true })
         */
 
-       /**************************
-        * 使用方法三
-       */
+        /*progress 3*************************************************/
         //更改原型链
-        Node.prototype.getSiblings = function(){
-            var allChildren = this.parentNode.children
+
+        Node.prototype.getSiblings = function () {
+            var allChildren = this.parentNode.children //this call的第一个参数
             var arr = {
                 length: 0
             }
@@ -80,15 +79,118 @@
             }
             return arr
         }
-        //console.log(item3.getSiblings())
 
-        Node.prototype.addClass = function(classes){
+        Node.prototype.addClass = function (classes) {
             for (let key in classes) {
                 var methodName = classes[key] ? "add" : "remove"
                 this.classList[methodName](key)
+            }
         }
-    }
-    console.log(item3.addClass({ a: true, b: true, c: true }))
+        //console.log(item3.getSiblings())
+        //console.log(item3.addClass({ a: true, b: true, c: true }))
+
+
+        /*progress 4*************************************************/
+        //Node2版本 给一个标签getSiblings or addClass 传选择器或Node
+        window.jquery = function (nodeOrSelector) {
+            let node
+            if (typeof nodeOrSelector === 'string') {
+                node = document.querySelector(nodeOrSelector)
+            } else {
+                node = nodeOrSelector
+            }
+            return {
+                getSiblings: function () {
+                    var allChildren = node.parentNode.children //this call的第一个参数
+                    var arr = {
+                        length: 0
+                    }
+                    for (let i = 0; i < allChildren.length; i++) {
+                        if (allChildren[i] !== node) {
+                            arr[arr.length] = allChildren[i] //伪数组的赋值方法
+                            arr.length++
+                        }
+                    }
+                    return arr
+                },
+                addClass: function (classes) {
+                    for (let key in classes) {
+                        var methodName = classes[key] ? "add" : "remove"
+                        node.classList[methodName](key)
+                    }
+                }
+            }
+        }
+        //var node2 = jquery('ul > li:nth-child(2)')
+        // console.log(node2.getSiblings())
+        //node2.addClass({'red': true, b: false, c: true })
+
+        /*progress 5*************************************************/
+        //nodes版本，操作多个节点
+        function ad(node, classes) {
+            //给谁加属性
+            for (let key in classes) {
+                var methodName = classes[key] ? "add" : "remove"
+                node.classList[methodName](key)
+            }
+        }
+        window.jjquery = function (nodeOrSelector) {
+            //给一堆标签addClass
+            let nodes = {}
+            if (typeof nodeOrSelector === 'string') {
+                let temp = document.querySelectorAll(nodeOrSelector) //伪数组
+
+                for (let i = 0; i < temp.length; i++) {  //改成纯净的伪数组，querySelectorAll给返回一大堆__proto__
+                    nodes[i] = temp[i]
+
+                }
+                nodes.length = temp.length
+            } else if (nodeOrSelector instanceof Node) {
+                nodes = { 0: nodeOrSelector, length: 1 }  //与上面种情况保持结果一致               
+            }
+            nodes.addClass = function (classes) {
+                for (let i = 0; i < nodes.length; i++) {
+                    ad(nodes[i], classes)
+                }
+            }
+
+            nodes.getText = function () {
+                var texts = []
+                for (let i = 0; i < nodes.length; i++) {
+                    texts.push(nodes[i].textContent)
+                }
+                return texts
+            }
+
+            nodes.setText = function (text) {
+                for (let i = 0; i < nodes.length; i++) {
+                    nodes[i].textContent = text
+                }
+            }
+
+            nodes.text = function (text) {
+                //给参数设置，不给就获取
+                if (text === undefined) {
+                    var texts = []
+                    for (let i = 0; i < nodes.length; i++) {
+                        texts.push(nodes[i].textContent)
+                    }
+                    return texts
+                }
+                else {
+                    for (let i = 0; i < nodes.length; i++) {
+                        nodes[i].textContent = text
+                    }
+                }
+            }
+            return nodes
+        }
+
+        var node2 = jjquery('ul > li')
+        node2.addClass({ 'red': false, blue: true })
+        console.log(node2.text("mmm"))
+        console.log(node2.text())
+
     </script>
 </body>
 
