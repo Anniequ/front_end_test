@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .images{
+            display: flex;
+            justify-content: flex-start;
+            transition: all 0.5s;
+        }
+        .images > img{
+            
+        }
+        .window{
+            width: 300px;
+            overflow: hidden;
+        }
+    </style>
+    <script src="jquery-3.6.0.min.js">
+    </script>
+</head>
+<body>
+    <div class='window'>
+        <div class="images" id="images">
+            <img src="./img/1.jpg" width=300 height=200 alt=""> <!--占位，防止后面要让位-->
+            <img src="./img/2.jpg" width=300 height=200 alt="">
+            <img src="./img/3.jpg" width=300 height=200 alt="">
+
+        </div>
+    </div>
+    <button id="p1">第1张</button>
+    <button id="p2">第2张</button>
+    <button id="p3">第3张</button>
+    <script src="carousel.js"></script>
+</body>
+</html>
