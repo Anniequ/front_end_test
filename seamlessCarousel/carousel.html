@@ -5,21 +5,34 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>carousel</title>
-    <link rel="stylesheet" href="./carousel.css">
+    <link rel="stylesheet" href="./carousel_f.css">
 </head>
 <body>
-    <div class='window'>
-        <div class="images" id="images">
-            <img src="./img/1.jpg" width=300 height=200 alt="图片"> <!--宽高设置，占位，防止后面要让位-->
-            <img src="./img/2.jpg" width=300 height=200 alt="图片">
-            <img src="./img/3.jpg" width=300 height=200 alt="图片">
-            <img src="./img/4.jpg" width=300 height=200 alt="图片">
-            <img src="./img/5.jpg" width=300 height=200 alt="图片">
-
+    <div class="container">
+        <div class='window'>
+            <div class="images" id="images">
+                <img src="./img/1.jpg" width=300 height=200 alt="图片"> <!--宽高设置，占位，防止后面要让位-->
+                <img src="./img/2.jpg" width=300 height=200 alt="图片">
+                <img src="./img/3.jpg" width=300 height=200 alt="图片">
+                <img src="./img/4.jpg" width=300 height=200 alt="图片">
+                <img src="./img/5.jpg" width=300 height=200 alt="图片">
+    
+            </div>
+        </div>
+        <div id="controls" style="text-align: center;">
+            <button id="previous">上一张</button>
+            <button id="next">下一张</button>
+        </div>
+        <div id="buttonwrapper" style="text-align: center;">
+            <button>1</button>
+            <button>2</button>
+            <button>3</button>
+            <button>4</button>
+            <button>5</button>
         </div>
     </div>
     
     <script src="jquery-3.6.0.min.js"></script>
-    <script src="carousel.js"></script>
+    <script src="carousel_f.js"></script>
 </body>
 </html>
