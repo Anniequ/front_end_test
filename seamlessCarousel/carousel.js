@@ -9,7 +9,7 @@ function init() {
 imgLength = init()
 
 let n = 1
-setInterval(() => {
+let timer = setInterval(() => {
     makeLeave(getImage(n))  //.one  return 
         .one('transitionend', (e) => {
             makeEnter($(e.currentTarget))
@@ -17,7 +17,21 @@ setInterval(() => {
     makeCurrent(getImage(n+1))
     n += 1
 }, 2000)
-
+//解决一个bug，离开页面它就不走了
+document.addEventListener('visibilitychange',function(e){
+    if(document.hidden){
+        window.clearInterval(timer)
+    }else{
+        timer = setInterval(() => {
+            makeLeave(getImage(n))
+                .one('transitionend', (e) => {
+                    makeEnter($(e.currentTarget))
+                })
+            makeCurrent(getImage(n+1))
+            n += 1
+        }, 2000)
+    }
+})
 function getImage(n){
     return $(`.images > img:nth-child(${xxx(n)})`)
 }
