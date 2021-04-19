@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="grand1">
+        爷爷
+        <div id="parent1">
+            父亲
+            <div id="child1">
+                儿子
+            </div>
+        </div>
+    </div>
+
+    <div id="wrapper"class="wrapper">
+        <button id="clickMe">点我</button>
+        <div id="popover" class="popover">浮层</div>
+    </div>
+    <script>
+        //当点击儿子时，同时也点击了爷爷和父亲
+        grand1.addEventListener('click',function f1(){
+            console.log('爷爷')
+        },false) //默认为false，先通知小的，也就是儿子，
+        parent1.addEventListener('click',function f2(){
+            console.log('爸爸')
+        })
+        child1.addEventListener('click',function f3(){
+            console.log('儿子')
+        })
+        //fn1 fn2 fn3的执行顺序  -->都可以 从外到内(捕获阶段)，从内到外(冒泡阶段)问两次，根据传的true还是false决定走哪个
+    </script>
+    <script>
+        //点击别处关闭浮层：
+        
+    </script>
+</body>
+</html>
