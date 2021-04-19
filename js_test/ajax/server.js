@@ -36,14 +36,14 @@ var server = http.createServer(function(request, response){
     response.statusCode = 200
     response.setHeader('Content-Type','text/json; charset=utf-8')
     response.setHeader('Access-Control-Allow-Origin',"*") 
-    response.write({
+    response.write(`{
       "note":{
         "to":"小明",
         "from":"小红",
         "heading":"打招呼",
         "content":"hi"
       }
-    })
+    }`)
     response.end()
   }else{
     response.statusCode = 404
