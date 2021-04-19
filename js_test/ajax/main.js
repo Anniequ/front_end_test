@@ -4,7 +4,7 @@ window.jQuery = function (nodeOrSelector) {
     nodes.html = function () { }
     return nodes
 }
-window.jQuery.ajax = function ({url,method,body,successFn,failFn, headers}) {
+window.jQuery.ajax = function ({ url, method, body, headers }) {
     // let url
     // if(arguments.length === 1){
     //     url = options.url
@@ -18,40 +18,54 @@ window.jQuery.ajax = function ({url,method,body,successFn,failFn, headers}) {
     // let headers = options.headers
     //ES6:
     //let {url,method,body,successFn,failFn, headers} = options
-    let request = new XMLHttpRequest()
-    request.open(method, url)
-    for (let header in headers){
-        let value = headers[header]
-        request.setRequestHeader(header,value)
-    }
-    request.onreadystatechange = () => {
-        if (request.readyState === 4) {// 4请求完成
-            // console.log('请求响应完成')
-            if (request.status >= 200 && request.status < 300) { // request.statusText  --> OK  响应第一部分
-                successFn.call(undefined, request.responseText)
-            } else if (request.status >= 400) {
-                failFn.call(undefined, request)
+
+    return new Promise(function (resolve, reject) {
+        let request = new XMLHttpRequest()
+        request.open(method, url)
+        for (let header in headers) {
+            let value = headers[header]
+            request.setRequestHeader(header, value)
+        }
+        request.onreadystatechange = () => {
+            if (request.readyState === 4) {// 4请求完成
+                // console.log('请求响应完成')
+                if (request.status >= 200 && request.status < 300) { // request.statusText  --> OK  响应第一部分
+                    resolve.call(undefined, request.responseText)
+                } else if (request.status >= 400) {
+                    reject.call(undefined, request)
+                }
             }
         }
-    }
-    request.send(body)
+        request.send(body)
+    })
 }
 window.$ = window.jQuery
 
 myButton.addEventListener('click', (e) => {
     window.jQuery.ajax({
-        url: '/xxx',                             
+        url: '/xxx',
         method: 'post',
-        headers:{
-            'content-type':'application/x-www-form-urlencoded',
-            'frank':'18'
+        headers: {
+            'content-type': 'application/x-www-form-urlencoded',
+            'frank': '18'
         },
         body: 'a=1&b=2',
-        successFn: (responseText) => { console.log('success', responseText) }, //回调
-        failFn: (request) => { console.log('fail', request) }
-    })
+    }).then(
+        (responseText)=>{console.log(responseText)},
+        (request)=>{console.log('fail', request)}
+    )
 })
 
+//jQuery法
+// myButton.addEventListener('click', (e) => {
+//     $.ajax({ //jQuery发现json,自动会给你parse变成对象
+//         url: '/xxx',                             
+//         method: 'post',
+//     }).then( //promise
+//         (responseText)=>{console.log(responseText)},
+//         (request) =>{console.log(request)}
+//     )
+// })
 
 // myButton.addEventListener('click', (e) => {
 //     let request = new XMLHttpRequest()
