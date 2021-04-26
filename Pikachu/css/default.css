@@ -1,0 +1,25 @@
+*{margin: 0;padding: 0; box-sizing: border-box;}
+*::after{
+    box-sizing: border-box;
+}
+*::before{
+    box-sizing: border-box; /*后续加border不会影响宽高*/
+}
+/* .wrapper > :not(:last-child){
+    z-index: 1;
+} */
+body{
+    display: flex;
+    font-display: column;
+    height: 100vh;
+}
+.code-wrapper{
+    flex: 1;
+}
+.preview-wrapper{
+    flex: 1;
+}
+#code{
+    overflow: hidden;
+    height: 100%;
+}
