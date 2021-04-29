@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sign up</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .form-wrapper {
+            padding: 20px;
+            border: 1px solid #ddd;
+            min-width: 350px;
+        }
+
+        .form-wrapper .raw {
+            margin: 10px 0;
+        }
+
+        .form-wrapper .raw>label {
+            display: inline-block;
+            min-width: 4em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="form-wrapper">
+        <h1>注册</h1>
+        <form id='signUpForm'>
+            <div class="raw">
+                <label>邮箱</label>
+                <input type="text" name="email">
+                <span class="error"></span>
+            </div>
+            <div class="raw">
+                <label>密码</label>
+                <input type="password" name="psd">
+                <span class="error"></span>
+            </div>
+            <div class="raw">
+                <label>确认密码</label>
+                <input type="password" name="psd_conf">
+                <span class="error"></span>
+            </div>
+            <div class="raw">
+                <input type="submit" value="注册">
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        let hash = {}
+        let $form = $('#signUpForm')
+        $form.on('submit', (e) => {
+            e.preventDefault()
+            let need = ['email', 'psd', 'psd_conf']
+            need.forEach((name) => {
+                let value = $form.find(`[name=${name}]`).val()
+                hash[name] = value
+            })
+            $form.find('.error').each((index, span)=>{
+                $(span).text('')
+            })
+            if(hash['email'] === ''){
+                $form.find('[name="email"]').siblings('.error').text('填邮箱呀')
+                return
+            }
+            if(hash['psd'] === ''){
+                $form.find('[name="psd"]').siblings('.error').text('填密码呀')
+                return
+            }
+            if(hash['psd_conf'] === ''){
+                $form.find('[name="psd_conf"]').siblings('.error').text('确认密码呀')
+                return
+            }
+            if(hash['psd_conf'] !== hash['psd']){
+                $form.find('[name="psd_conf"]').siblings('.error').text('密码不匹配')
+                return
+            }
+            $.post('/sign_up', hash)
+            .then(() => {
+                console.log('success')
+            }, (request) => {               
+                let {errors} = request.responseJSON
+               if(errors.email && errors.email === 'invalid'){
+                   $form.find('[name="email"]').siblings('.error').text('邮箱格式错误')
+               }
+            })
+        })
+    </script>
+</body>
+
+</html>
